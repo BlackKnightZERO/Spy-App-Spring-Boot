@@ -1,0 +1,62 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<title>Edit Mission</title>
+<meta charset="ISO-8859-1">
+<style>
+		body{
+			margin: 0px;
+		}
+		.nav{
+			height: 8%;
+			width:100%;
+			background:teal;
+			display:flex;
+			align-items:center;
+			justify-content:center;
+		}
+		.center{
+			text-align:center;
+		}
+	</style>
+</head>
+<body>
+<div class="nav">
+		<div th:if="${session.auth!='authorized'}">
+			<form action="#" th:action="@{/startSession}" method="POST">
+				<input type="submit" value="Start Session" >
+			</form>
+		</div>
+		<div th:unless="${session.auth!='authorized'}">
+			<form action="#" th:action="@{/destroySession}" method="POST">
+				<input type="submit" value="End Session" >
+			</form>
+		</div>
+	</div>
+	
+	<div class="center" th:if="${session.auth!='authorized'}">
+		<h2>Start a session to work with the App!</h2>
+	</div>
+	<div class="center" th:unless="${session.auth!='authorized'}">
+		<h2 th:text="|You are ${session.auth}! &#128526; &#9989;|"></h2>
+	</div>
+	
+	<div th:if="${session.auth=='authorized'}">
+<h1 th:text="${editPageTitle}"></h1>
+<br>
+  
+<form method='post' action="/updateMission" th:action="@{/updateMission}" th:object="${mission}">
+<input type="hidden" name="id" th:field="*{id}" requried /><br>
+<input type="hidden" name="agent" th:field="*{agent}" requried /><br>
+Mission title : <input type="text" name="title" th:field="*{title}" requried /><br>
+<h2>Edit the Gadget</h2>
+Gadget 1: <input type="text" name="gadget1" th:field="*{gadget1}" requried /><br>
+Gadget 2: <input type="text" name="gadget2" th:field="*{gadget2}" requried /><br>
+<input type="submit" value="Update mission!" />
+</form>
+<br>
+<a href="/">Back to home</a>
+
+</div>
+
+</body>
+</html>

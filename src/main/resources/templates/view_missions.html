@@ -1,0 +1,86 @@
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<title>View Mission</title>
+<meta charset="ISO-8859-1">
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 50%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+body{
+			margin: 0px;
+		}
+		.nav{
+			height: 8%;
+			width:100%;
+			background:teal;
+			display:flex;
+			align-items:center;
+			justify-content:center;
+		}
+		.center{
+			text-align:center;
+		}
+</style>
+</head>
+<body>
+<div class="nav">
+		<div th:if="${session.auth!='authorized'}">
+			<form action="#" th:action="@{/startSession}" method="POST">
+				<input type="submit" value="Start Session" >
+			</form>
+		</div>
+		<div th:unless="${session.auth!='authorized'}">
+			<form action="#" th:action="@{/destroySession}" method="POST">
+				<input type="submit" value="End Session" >
+			</form>
+		</div>
+	</div>
+	
+	<div class="center" th:if="${session.auth!='authorized'}">
+		<h2>Start a session to work with the App!</h2>
+	</div>
+	<div class="center" th:unless="${session.auth!='authorized'}">
+		<h2 th:text="|You are ${session.auth}! &#128526; &#9989;|"></h2>
+	</div>
+	
+	<div th:if="${session.auth=='authorized'}">
+<h1 th:text="${viewPageTitle}"></h1>
+
+<table th:if="${missions != null AND !missions.empty}">
+<thead>
+<tr>
+<th>Title</th>
+<th>Gadget 1</th>
+<th>Gadget 2</th>
+<th colspan="2">Operation</th>
+</tr>
+
+<tr th:each="mission : ${missions}">
+	<td th:text="${mission.title}"></td>
+	<td th:text="${mission.gadget1}"></td>
+	<td th:text="${mission.gadget2}"></td>
+	<td><a th:href="@{/editMission/}+${mission.id}">Edit</a></td>
+	<td><a th:href="@{/deleteMission/}+${mission.id}">Delete</a></td>
+</tr>
+</thead>
+</table>
+
+<br>
+<a href="/">Back to home</a>
+
+</div>
+
+</body>
+</html>
